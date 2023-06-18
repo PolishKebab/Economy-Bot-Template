@@ -11,9 +11,13 @@ class Client extends cln{
      */
     commands = new Collection();
     /**
+     * @type {Collection<String,String>}
+     */
+    messageEarnCooldown = new Collection()
+    config = require("./config.json")
+    /**
      * @param {ClientOptions} options 
      */
-    config = require("./config.json")
     constructor(options){
       super(options);
       for(let command of fs.readdirSync("./commands")){

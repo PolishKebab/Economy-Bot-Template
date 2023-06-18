@@ -43,7 +43,6 @@ module.exports={
             embed.setDescription("An error has appereared")
             return await interaction.editReply({embeds:[embed]})
         }
-
     }
 
 }
