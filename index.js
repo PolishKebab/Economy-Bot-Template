@@ -1,4 +1,5 @@
 const {Client:cln,Partials,IntentsBitField,Collection,ClientOptions,SlashCommandBuilder,CommandInteraction} = require("discord.js")
+const fs = require("fs")
 /**
  * @typedef CommandData
  * @property {SlashCommandBuilder} data
@@ -12,6 +13,7 @@ class Client extends cln{
     /**
      * @param {ClientOptions} options 
      */
+    config = require("./config.json")
     constructor(options){
       super(options);
       for(let command of fs.readdirSync("./commands")){
@@ -21,12 +23,13 @@ class Client extends cln{
     }
 }
 const client = new Client({intents:[IntentsBitField.Flags.Guilds,IntentsBitField.Flags.GuildMessages],partials:[Partials.Message]})
-const fs = require("fs")
+
 for(let event of fs.readdirSync("./events")){
     try{
-        client.on(event.split(".")[0],async(...args)=>await require(`./events/${event}`)(bot,...args))
+        client.on(event.split(".")[0],async(...args)=>await require(`./events/${event}`)(client,...args))
     }catch(e){
         console.error(e)
     }
 }
-module.exports={Client};
+client.login(client.config.token);
+module.exports=Client
