@@ -1,0 +1,6 @@
+{
+"token":"Discord token here"
+"modules":{
+"messageEarn":true
+}
+}
