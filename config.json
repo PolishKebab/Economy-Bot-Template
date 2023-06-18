@@ -1,6 +1,6 @@
 {
-"token":"Discord token here",
-"modules":{
-  "messageEarn":false
+  "token":"Discord token here",
+  "modules":{
+    "messageEarn":false
+    }
   }
-}

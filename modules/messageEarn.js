@@ -9,6 +9,10 @@ class messageEarn{
      * @type {Number}
      */
     static cooldown = 1; // cooldown in minutes
+    /**
+     * @type {Number}
+     */
+    static reward = 1; // amount of credits rewarded for writing
     constructor(){
         if(require("../config.json").modules.messageEarn){
             db.exec(`CREATE TABLE IF NOT EXIST msgEarnCooldown (id varchar(20),timestamp varchar(20))`)
@@ -96,7 +100,7 @@ class messageEarn{
      * @returns {Promise.<Boolean>}
      */
     static async checkCooldown(user){
-        return (Date.now()-(await messageEarn.getCooldown(user)).timestamp>messageEarn.cooldown*60000)
+        return (Date.now()-((await messageEarn.getCooldown(user))?.timestamp|0)>messageEarn.cooldown*60000)
     }
 }
 module.exports={messageEarn}

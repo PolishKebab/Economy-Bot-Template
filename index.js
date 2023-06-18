@@ -10,10 +10,6 @@ class Client extends cln{
      * @type {Collection<String,CommandData>}
      */
     commands = new Collection();
-    /**
-     * @type {Collection<String,String>}
-     */
-    messageEarnCooldown = new Collection()
     config = require("./config.json")
     /**
      * @param {ClientOptions} options 
@@ -27,7 +23,6 @@ class Client extends cln{
     }
 }
 const client = new Client({intents:[IntentsBitField.Flags.Guilds,IntentsBitField.Flags.GuildMessages],partials:[Partials.Message]})
-
 for(let event of fs.readdirSync("./events")){
     try{
         client.on(event.split(".")[0],async(...args)=>await require(`./events/${event}`)(client,...args))
