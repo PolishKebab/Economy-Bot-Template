@@ -22,7 +22,7 @@ class Client extends cln{
       }
     }
 }
-const client = new Client({intents:[IntentsBitField.Flags.Guilds,IntentsBitField.Flags.GuildMessages],partials:[Partials.Message]})
+const client = new Client({intents:[IntentsBitField.Flags.Guilds,IntentsBitField.Flags.GuildMessages,IntentsBitField.Flags.MessageContent],partials:[Partials.Message]})
 for(let event of fs.readdirSync("./events")){
     try{
         client.on(event.split(".")[0],async(...args)=>await require(`./events/${event}`)(client,...args))
