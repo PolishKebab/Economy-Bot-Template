@@ -15,7 +15,7 @@ class messageEarn{
     static reward = 1; // amount of credits rewarded for writing
     constructor(){
         if(require("../config.json").modules.messageEarn){
-            db.exec(`CREATE TABLE IF NOT EXIST msgEarnCooldown (id varchar(20),timestamp varchar(20))`)
+            db.run(`CREATE TABLE IF NOT EXIST msgEarnCooldown (id varchar(20),timestamp varchar(20))`)
         }
     }
     /**

@@ -26,8 +26,8 @@ const {Snowflake} = require("discord.js");
 const Client = require("./index.js"); 
 const db = new Database("database.db");
 if(!fs.existsSync("./database.db")){
-    db.exec(`CREATE TABLE users (id varchar(20), credits int)`);
-    db.exec(`CREATE TABLE cmd (name varchar(20), value text)`);
+    db.run(`CREATE TABLE users (id varchar(20), credits int)`);
+    db.run(`CREATE TABLE cmd (name varchar(20), value text)`);
 }
 class CommandDatabase{
     /**
@@ -129,7 +129,7 @@ class Bank{
      */
     static async addUser(id,credits){
         return new Promise(r=>{
-            db.exec(`INSERT INTO users (id,credits) values (?,?)`,[id,credits],async(err)=>{
+            db.run(`INSERT INTO users (id,credits) values (?,?)`,[id,credits],async(err)=>{
                 if(err)throw err;
                 r(await Bank.getUser(id));
             })
@@ -142,7 +142,7 @@ class Bank{
      */
     static async deleteUser(id){
         return new Promise(r=>{
-            db.exec(`DELETE FROM users WHERE id=?`,[id],async(err)=>{
+            db.run(`DELETE FROM users WHERE id=?`,[id],async(err)=>{
                 if(err)throw err;
                 r();
             })
@@ -176,7 +176,7 @@ class Bank{
             if(user.credits<amount){
                 amount = user.credits;
             }
-            db.exec(`UPDATE users SET credits=credits-? WHERE id=?`,[amount,id],async(err)=>{
+            db.run(`UPDATE users SET credits=credits-? WHERE id=?`,[amount,id],async(err)=>{
                 if(err)throw err;
                 r(await Bank.getUser(id));
             })
@@ -189,7 +189,7 @@ class Bank{
      */
     static async setMoney(id,amount){
         return new Promise(r=>{
-            db.exec(`UPDATE users SET credits=? WHERE id=?`,[amount,id],async(err)=>{
+            db.run(`UPDATE users SET credits=? WHERE id=?`,[amount,id],async(err)=>{
                 if(err)throw err;
                 r(await Bank.getUser(id));
             })
@@ -232,4 +232,4 @@ async function checkSlashCommandUpdates(client) {
     }
     return changes;
   }
-module.exports={Bank,checkSlashCommandUpdates,db,CommandDatabase,encode,decode,User}
+module.exports={Bank,checkSlashCommandUpdates,db,CommandDatabase,encode,decode}

@@ -1,7 +1,7 @@
 {
-  "token":"Discord token here",
+  "token":"MTA5ODU4NTQzMTg2NTU2MTE4OA.GcfyM2.GdoDildEBBIuOIKLyTIr4pcYv3kJ4LDn3xbAn4",
   "modules":{
     "messageEarn":false,
-    "poke":false
+    "poke":true
     }
   }
