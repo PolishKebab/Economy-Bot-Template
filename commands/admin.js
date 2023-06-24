@@ -20,6 +20,8 @@ module.exports={
         ).addNumberOption(option=>
             option.setName("amount").setDescription("Amount of credits to set the money to").setRequired(true)    
         )    
+    ).addSubcommand(subcommand=>
+        subcommand.setName("resetmoney").setDescription("Resets money of all users to 0")
     ).setDMPermission(false),
     /**
     * @param {Client} client 
@@ -29,6 +31,11 @@ module.exports={
         const embed = new EmbedBuilder();
         try{
             let user;
+            if(interaction.options.getSubcommand()=="resetmoney"){
+                await Bank.resetMoneyAll();
+                embed.setDescription("Set credits of all members to 0")
+                return await interaction.editReply({embeds:[embed]})
+            }
             if(interaction.options.getSubcommand()=="givemoney"){
                 user = await Bank.addMoney(interaction.options.getUser("user").id,interaction.options.getNumber("amount"))
             }

@@ -4,17 +4,20 @@ class Poke{
     /**
      * @type {Number}
      */
-    static chance=10; // chance to get points (%)
+    static chance=25; // chance to get points (%)
     /**
      * @type {Number}
      */
     static reward=1; // amount of points rewarded
+    static channelWhitelist=[
+     // list of allowed channel ids
+    ]
     /**
      * @param {Message} message 
      * @returns {Boolean}
      */
     static checkValid(message){
-        return message.author.id=="969658822962585641" && message.content.includes("caught a pokemon in");
+        return message.author.id=="969658822962585641" && message.content.includes("caught a pokemon in") &&Poke.channelWhitelist.includes(message.channel.id);
     }
     /**
      * @param {Message} message 

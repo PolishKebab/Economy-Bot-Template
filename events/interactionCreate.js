@@ -8,7 +8,7 @@ module.exports=async(client,interaction)=>{
 if(interaction.isCommand()){
 try{
 await interaction.deferReply()
-    await bot.commands.get(interaction.commandName).execute(client,interaction)
+    await client.commands.get(interaction.commandName).execute(client,interaction)
 }catch(e){
     console.log(e)
     await interaction.editReply({content:e.message.toString()})

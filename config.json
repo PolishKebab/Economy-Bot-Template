@@ -1,7 +1,7 @@
 {
-  "token":"MTA5ODU4NTQzMTg2NTU2MTE4OA.GcfyM2.GdoDildEBBIuOIKLyTIr4pcYv3kJ4LDn3xbAn4",
+  "token":"Bot token here",
   "modules":{
     "messageEarn":false,
-    "poke":true
+    "poke":false
     }
   }

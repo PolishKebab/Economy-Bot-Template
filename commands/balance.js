@@ -12,10 +12,9 @@ module.exports={
     async execute(client,interaction){
         const embed = new EmbedBuilder()
         const user = interaction.options.getUser("user")||interaction.user;
-        const data = await Bank.getUser(user.id)
+        let data = await Bank.getUser(user.id)
         if(!data){
-            embed.setDescription("User account not found")
-            return await interaction.editReply({embeds:[embed]})
+            data = await Bank.addUser(interaction.user.id,0)
         }
         embed.setAuthor({name:user.username,iconURL:user.displayAvatarURL()})
         embed.setDescription(`Balance: $${data.credits}`)

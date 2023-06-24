@@ -164,6 +164,14 @@ class Bank{
             })
         })
     }
+    static async resetMoneyAll(){
+        return new Promise(r=>{
+            db.run(`UPDATE users set credits=0`,async(err)=>{
+                if(err)throw err;
+                r(await Bank.getUsers())
+            })
+        })
+    }
     /** 
      * @param {Snowflake} id 
      * @param {Number} amount 

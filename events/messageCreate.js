@@ -21,6 +21,7 @@ module.exports=async(client,message)=>{
     if(client.config.modules.poke){
         if(Poke.checkValid(message)&&Poke.check()){
             await Poke.giveReward((await Poke.getUser(message)).id)
+            await message.channel.send({content:`Congratulations **${(await Poke.getUser(message)).user.username}**, you won a point.`})
             console.log(`[Modules:Poke]${(await Poke.getUser(message)).user.username} won ${Poke.reward}$`)
         }
     }
