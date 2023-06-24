@@ -2,6 +2,7 @@ const Client = require("../index.js");
 const {ChatInputCommandInteraction,SlashCommandBuilder, EmbedBuilder} = require("discord.js")
 const {Bank} = require("../functions")
 module.exports={
+    module: "main",
     data: new SlashCommandBuilder().setName("admin").setDescription("Admin configuration command").addSubcommand(subcommand=>
         subcommand.setName("givemoney").setDescription("Give money to a user").addUserOption(option=>
             option.setName("user").setDescription("User to give the money to").setRequired(true)

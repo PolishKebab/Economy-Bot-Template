@@ -2,6 +2,7 @@ const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = requi
 const Client = require("..");
 const { Bank } = require("../functions");
 module.exports={
+    module:"main",
     data:new SlashCommandBuilder().setName("balance").setDescription("Check someones account balance").addUserOption(option=>
         option.setName("user").setDescription("The user you want to check the balance of").setRequired(false)
     ).setDMPermission(false),
