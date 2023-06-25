@@ -47,7 +47,7 @@ class CommandDatabase{
     /**
      * **Function that returns a command with the provided name from database**
      * @param {String} name Command name
-     * @returns {Promise.<Command>} Command from database (async)
+     * @returns {Promise.<Command|undefined>} Command from database (async)
      */
     static async getCommand(name){
         return new Promise(r=>{
@@ -119,9 +119,22 @@ class Bank{
         })
     }
     /**
+     * **Function that returns list of users sorted by credits (descending)**
+     * @param {Number} limit Limit of users in leaderboard
+     * @returns {Promise.<User[]>} Users sorted by credits (async)
+     */
+    static async getLeaderboard(limit=10){
+        return new Promise(r=>{
+            db.all(`SELECT * FROM users ORDER BY credits DESC LIMIT ?`,[limit],(err,rows)=>{
+                if(err)throw err;
+                r(rows);
+            })
+        })
+    }
+    /**
      * **Function that gives user data from database**
      * @param {Snowflake} id User id
-     * @returns {Promise.<User>} User from database (async)
+     * @returns {Promise.<User|undefined>} User from database (async)
      */
     static async getUser(id){
         return new Promise(r=>{
@@ -224,7 +237,7 @@ class Bank{
 /**
  * **Function that checks whether any slash commands were update/deleted/added**
  * @param {Client} client Bot client
- * @returns {Promise.<Array.<{name:String,value:String,action:"insert"|"update"|"delete">>}} Array of commands to update/delete/add to database
+ * @returns {Promise.<{name:String,value:String,action:"insert"|"update"|"delete"}[]>} Array of commands to update/delete/add to database
  */
 /*
 if the command is in commands folder, then add to database, register command on discord (insert)

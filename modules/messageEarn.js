@@ -6,19 +6,24 @@ const {db} = require("../functions")
  */
 class messageEarn{
     /**
+     * **Amount of cooldown in minutes**
      * @type {Number}
      */
     static cooldown = 1; // cooldown in minutes
     /**
+     * **Amount of credits rewarded**
      * @type {Number}
      */
     static reward = 1; // amount of credits rewarded for writing
     constructor(){
         if(require("../config.json").modules.messageEarn){
             db.run(`CREATE TABLE IF NOT EXIST msgEarnCooldown (id varchar(20),timestamp varchar(20))`)
+        }else{
+            throw new Error(`[Modules:messageEarn] Error: module is not enabled.`)
         }
     }
     /**
+     * **Function that returns all cooldowns**
      * @returns {Promise.<Cooldown[]>}
      */
     static async getCooldowns(){
@@ -33,6 +38,12 @@ class messageEarn{
         })
     }
     /**
+     * **Function that returns a cooldown with the provided name**
+     * 
+     * example:
+     * ```js
+     * const cooldown = await messageEarn.getCooldown("525791610794147842")
+     * ```
      * @param {String} user 
      * @returns {Promise.<Cooldown>}
      */
@@ -48,6 +59,12 @@ class messageEarn{
         })
     }
     /**
+     * **Function that creates a cooldown**
+     * 
+     * example:
+     * ```js
+     * await messageEarn.addCooldown("525791610794147842",Date.now())
+     * ```
      * @param {String} user 
      * @param {String} timestamp 
      * @returns {Promise.<Cooldown>}
@@ -64,6 +81,12 @@ class messageEarn{
         })
     }
     /**
+     * **Function that deletes a cooldown**
+     * 
+     * example:
+     * ```js
+     * await messageEarn.removeCooldown("525791610794147842")
+     * ```
      * @param {String} user 
      * @returns {Promise.<void>}
      */
@@ -79,6 +102,12 @@ class messageEarn{
         })
     }
     /**
+     * **Function that sets the cooldown to the provided one**
+     * 
+     * example
+     * ```js
+     * await messageEarn.setCooldown("525791610794147842",Date.now())
+     * ```
      * @param {String} user 
      * @param {String} timestamp 
      * @returns {Promise.<Cooldown>}

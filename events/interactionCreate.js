@@ -9,6 +9,7 @@ if(interaction.isCommand()){
 try{
 await interaction.deferReply()
     await client.commands.get(interaction.commandName).execute(client,interaction)
+    console.log(`[${interaction.user.username}] execute /${interaction.commandName}`)
 }catch(e){
     console.log(e)
     await interaction.editReply({content:e.message.toString()})

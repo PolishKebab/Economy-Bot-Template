@@ -1,8 +1,9 @@
 {
-  "token":"Discord bot token",
-  "modules":{
-    "main":true,
-    "messageEarn":false,
-    "poke":true
-    }
-  }
+    "token":"Bot token here",
+    "modules":{
+      "main":true,
+      "messageEarn":false,
+      "poke":true,
+      "store":false
+      }
+}
