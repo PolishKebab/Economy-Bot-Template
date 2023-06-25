@@ -18,7 +18,7 @@ class Poke{
     static reward=1;
     /**
      * **List of allowed channel ids**
-     * @type {String[]}
+     * @type {{id:String,type:"channel"|"parent"}[]}
      */
     static channelWhitelist=[
     ]
@@ -33,7 +33,7 @@ class Poke{
      * @returns {Boolean}
      */
     static checkValid(message){
-        return message.author.id=="969658822962585641" && message.content.includes("caught a pokemon in") &&Poke.channelWhitelist.includes(message.channel.id);
+        return message.author.id=="969658822962585641" && message.content.includes("caught a pokemon in") && (Poke.channelWhitelist.some(r=>r.id==message.channelId)||Poke.channelWhitelist.some(r=>r.id==message.channel.parentId));
     }
     /**
      * **Function that parses the user from message**
