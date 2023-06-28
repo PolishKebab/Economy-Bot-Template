@@ -46,9 +46,11 @@ module.exports={
             if(interaction.options.getSubcommand()=="setmoney"){
                 user = await Bank.setMoney(interaction.options.getUser("user").id,interaction.options.getNumber("amount"))
             }
-            embed.setDescription(`Successfully updated ${interaction.guild.members.cache.get(user.id).username}'s balance to ${user.credits}.`)
+            embed.setDescription(`Successfully updated ${interaction.options.getUser("user").username}'s balance to ${user.credits}.`)
+            return await interaction.editReply({embeds:[embed]})
         }catch(e){
             embed.setDescription("An error has appereared")
+            console.log(e)
             return await interaction.editReply({embeds:[embed]})
         }
     }

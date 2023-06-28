@@ -1,0 +1,14 @@
+<script>
+window.addEventListener("load",async(e)=>{
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+	const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
+	const data = await ( await fetch('https://discord.com/api/users/@me', {headers: {authorization: `${tokenType} ${accessToken}`}})).json()
+    await fetch('/auth',{
+        method:'POST',
+        headers: {
+	        'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(data)
+    })
+})
+</script>

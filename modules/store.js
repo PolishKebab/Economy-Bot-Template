@@ -5,11 +5,17 @@ const {db} = require("../functions")
  * @property {String} name
  * @property {String} description
  * @property {String} image
+ * @property {Number} price
+ */
+/**
+ * **Plugin made by:**
+ * 
+ * [PolishKebab](https://github.com/PolishKebab)
  */
 class Store{
     constructor(){
         if(require("../config.json").modules.store){
-            db.run(`CREATE TABLE IF NOT EXIST store (id int primary key autoincrement, name text, description text, image text)`)
+            db.run(`CREATE TABLE IF NOT EXIST store (id int primary key autoincrement, name text, description text, image text, price int)`)
         }else{
             throw new Error(`[Modules:Store] Error: module is not enabled.`)
         }
@@ -88,9 +94,9 @@ class Store{
      * @param {String} image 
      * @returns {Promise.<Item>}
      */
-    static async addItem(name,description,image){
+    static async addItem(name,description,image,price=0){
         return new Promise((resolve,reject)=>{
-            db.run(`INSERT INTO store (name,description,image) values (?,?,?)`,[name,description,image],async(err)=>{
+            db.run(`INSERT INTO store (name,description,image,price) values (?,?,?,?)`,[name,description,image,price],async(err)=>{
                 if(err){
                     reject(err)
                 }else{

@@ -4,17 +4,22 @@ const {db} = require("../functions")
  * @property {String} id
  * @property {String} timestamp
  */
+/**
+ * **Plugin made by:**
+ * 
+ * [PolishKebab](https://github.com/PolishKebab)
+ */
 class messageEarn{
     /**
      * **Amount of cooldown in minutes**
      * @type {Number}
      */
-    static cooldown = 1; // cooldown in minutes
+    static cooldown = 1;
     /**
      * **Amount of credits rewarded**
      * @type {Number}
      */
-    static reward = 1; // amount of credits rewarded for writing
+    static reward = 1;
     constructor(){
         if(require("../config.json").modules.messageEarn){
             db.run(`CREATE TABLE IF NOT EXIST msgEarnCooldown (id varchar(20),timestamp varchar(20))`)

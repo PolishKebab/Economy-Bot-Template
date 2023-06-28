@@ -3,7 +3,9 @@
     "modules":{
       "main":true,
       "messageEarn":false,
-      "poke":true,
-      "store":false
+      "poke":false,
+      "store":false,
+      "API":false,
+      "Authentication":false
       }
 }

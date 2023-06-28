@@ -1,5 +1,10 @@
 const { Message, GuildMember } = require("discord.js");
 const { Bank,User } = require("../functions");
+/**
+ * **Plugin made by:**
+ * 
+ * [PolishKebab](https://github.com/PolishKebab)
+ */
 class Poke{
     constructor(){
         if(!require("../config.json").modules.poke){
@@ -21,6 +26,7 @@ class Poke{
      * @type {{id:String,type:"channel"|"parent"}[]}
      */
     static channelWhitelist=[
+        {id:"979235923436908614",type:"parent"}
     ]
     /**
      * **Function that check whether the message provided is valid to receive the award**
@@ -29,7 +35,7 @@ class Poke{
      * ```js
      * client.on("messageCreate",(message)=>{ Poke.checkValid(message)})
      * ```
-     * @param {Message} message 
+     * @param {Message<true>} message 
      * @returns {Boolean}
      */
     static checkValid(message){

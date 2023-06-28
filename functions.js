@@ -1,5 +1,10 @@
 /**
  * **Function that encodes utf-8 to base64
+ * 
+ * example:
+ * ```js
+ * encode("Hello!") //SGVsbG8=
+ * ```
  * @param {String} string 
  * @returns {String}
  */
@@ -8,6 +13,11 @@ function encode(string){
 }
 /**
  * **Function that decodes base64 to utf-8**
+ * 
+ * example:
+ * ```js
+ * decode("SGVsbG8=") //Hello
+ * ```
  * @param {String} string 
  * @returns {String}
  */
@@ -34,6 +44,11 @@ if(!fs.existsSync("./database.db")){
 class CommandDatabase{
     /**
      * **Function that returns all commands in database**
+     * 
+     * example:
+     * ```js
+     * await CommandDatabase.getCommands() 
+     * ```
      * @returns {Promise.<Command[]>} Array of commands in database (async)
      */
     static async getCommands(){
@@ -46,6 +61,11 @@ class CommandDatabase{
     }
     /**
      * **Function that returns a command with the provided name from database**
+     * 
+     * example:
+     * ```js
+     * await CommandDatabase.getCommand("admin")
+     * ```
      * @param {String} name Command name
      * @returns {Promise.<Command|undefined>} Command from database (async)
      */
@@ -59,6 +79,11 @@ class CommandDatabase{
     }
     /**
      * **Function that adds a command to database**
+     * 
+     * example:
+     * ```js
+     * await CommandDatabase.addCommand("command",new SlashCommandBuilder().setName("command").setDescription("A slash command").toJSON())
+     * ```
      * @param {String} name Command name
      * @param {String} data Command data
      * @returns {Promise.<Command>} Command from database (async)
@@ -76,6 +101,11 @@ class CommandDatabase{
       }
     /**
      * **Function that removes a provided command from database**
+     * 
+     * example:
+     * ```js
+     * await CommandDatabase.removeCommand("command")
+     * ```
      * @param {String} name Command name
      * @returns {Promise.<void>} Nothing (async)
      */
@@ -92,6 +122,11 @@ class CommandDatabase{
     }
     /**
      * **Function that edits a provided command from database**
+     * 
+     * example:     
+     * ```js
+     * await CommandDatabase.editCommand("command",new SlashCommandBuilder().setName("command").setDescription("A slash command").toJSON())
+     * ```
      * @param {String} name Command name
      * @param {String} data Command data
      * @returns {Promise.<Command>} Command from database (async)
@@ -108,6 +143,11 @@ class CommandDatabase{
 class Bank{
     /**
      * **Function that gives data about all users in the database**
+     * 
+     * example:
+     * ```js
+     * await Bank.getUsers()
+     * ```
      * @returns {Promise.<User[]>} Array of users (async)
      */
     static async getUsers(){
@@ -120,6 +160,11 @@ class Bank{
     }
     /**
      * **Function that returns list of users sorted by credits (descending)**
+     * 
+     * example:
+     * ```js
+     * await Bank.getLeaderboard(100)
+     * ```
      * @param {Number} limit Limit of users in leaderboard
      * @returns {Promise.<User[]>} Users sorted by credits (async)
      */
@@ -133,6 +178,11 @@ class Bank{
     }
     /**
      * **Function that gives user data from database**
+     * 
+     * example:
+     * ```js
+     * await Bank.getUser("525791610794147842")
+     * ```
      * @param {Snowflake} id User id
      * @returns {Promise.<User|undefined>} User from database (async)
      */
@@ -146,6 +196,11 @@ class Bank{
     }
     /**
      * **Function that adds a user to database**
+     * 
+     * example:
+     * ```js
+     * await Bank.addUser("525791610794147842",100)
+     * ```
      * @param {String} id User id
      * @param {Number} credits Amount of credits you want to create the account with
      * @returns {Promise.<User>} User from database (async)
@@ -160,6 +215,11 @@ class Bank{
     }
     /**
      * **Function that deletes the provided user from database**
+     * 
+     * example:
+     * ```js
+     * await Bank.deleteUser("525791610794147842")
+     * ```
      * @param {String} id User id
      * @returns {Promise.<void>} Nothing (async)
      */
@@ -173,6 +233,11 @@ class Bank{
     }
     /**
      * **Function that gives credits to a provided user**
+     * 
+     * example:
+     * ```js
+     * await Bank.addMoney("525791610794147842",100)
+     * ```
      * @param {Snowflake} id User id
      * @param {Number} amount Amound of credits to add to a user
      * @returns {Promise.<User>} User from database
@@ -190,6 +255,11 @@ class Bank{
     }
     /**
      * **Function that resets the balance of all acounts to 0**
+     * 
+     * example:
+     * ```js
+     * await Bank.resetMoneyAll()
+     * ```
      * @returns {Promise.<User[]>} Array of users (async)
      */
     static async resetMoneyAll(){
@@ -202,6 +272,11 @@ class Bank{
     }
     /** 
      * **Function that removes credits from a provided user**
+     * 
+     * example:
+     * ```js
+     * await Bank.removeMoney("525791610794147842",100)
+     * ```
      * @param {Snowflake} id User id
      * @param {Number} amount Amount of credits that you want removed from the user
      * @returns {Promise.<User>} User from database (async)
@@ -209,7 +284,9 @@ class Bank{
     static async removeMoney(id,amount){
         return new Promise(async r=>{
             const user = await Bank.getUser(id)
-            if(!user)return;
+            if(!user){
+                r(await Bank.addUser(id,0));
+            }
             if(user.credits<amount){
                 amount = user.credits;
             }
@@ -221,12 +298,20 @@ class Bank{
     }
     /**
      * **Function that sets the credits of a provided user**
+     * 
+     * example:
+     * ```js
+     * await Bank.setMoney("525791610794147842",100)
+     * ```
      * @param {String} id 
      * @param {Number} amount 
      * @returns {Promise.<User>}
      */
     static async setMoney(id,amount){
-        return new Promise(r=>{
+        return new Promise(async r=>{
+            if(!await Bank.getUser(id)){
+                await Bank.addUser(id,amount)
+            }
             db.run(`UPDATE users SET credits=? WHERE id=?`,[amount,id],async(err)=>{
                 if(err)throw err;
                 r(await Bank.getUser(id));
@@ -239,11 +324,6 @@ class Bank{
  * @param {Client} client Bot client
  * @returns {Promise.<{name:String,value:String,action:"insert"|"update"|"delete"}[]>} Array of commands to update/delete/add to database
  */
-/*
-if the command is in commands folder, then add to database, register command on discord (insert)
-if the command in in database, but not in folder, delete from database, uregister on discord (delete)
-if the command in database is different from the command in folder, update command in database and register command on discord (update)
-*/
 async function checkSlashCommandUpdates(client) { 
     const dbCommands = await new Promise((resolve, reject) => {
       db.all('SELECT * FROM cmd', (err, rows) => {
