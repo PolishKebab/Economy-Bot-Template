@@ -24,7 +24,7 @@ module.exports=async(client)=>{
         Routes.applicationCommands(client.user.id),
         {body: updates.map(r=>JSON.parse(decode(r.data)))}
     )
-    new API()
+    new API(client)
     console.log("Checking module status...")
     for(let module in client.config.modules){
         console.log(`[Modules:${module}] ${client.config.modules[module]?"on":"off"}.`)

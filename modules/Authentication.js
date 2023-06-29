@@ -1,7 +1,7 @@
 const {db} = require("../functions")
 /**
  * @typedef User
- * @property {String} username
+ * @property {String} id
  * @property {Number} authlvl
  */
 /**
@@ -20,7 +20,7 @@ class Authentication{
         if(!require("../config.json").modules.Authentication){
             throw new Error(`[Modules:Authentication]: module is not enabled.`)
         }else{
-            db.run(`CREATE TABLE IF NOT EXIST auth (user text, authlvl int)`)
+            db.run(`CREATE TABLE IF NOT EXIST auth (id text, authlvl int)`)
         }
     }
     /**
@@ -45,18 +45,18 @@ class Authentication{
         })
     }
     /**
-     * **Function that get a user with the provided username**
+     * **Function that get a user with the provided id**
      * 
      * example:
      * ```js
-     * await Authentication.getUser("User")
+     * await Authentication.getUser("525791610794147842")
      * ```
-     * @param {String} username Username of the user you want to get
+     * @param {String} id id of the user you want to get
      * @returns {Promise.<{code:Number,message:User|Error}>}
      */
-    static async getUser(username){
+    static async getUser(id){
         return new Promise((resolve,reject)=>{
-            db.all(`SELECT * FROM auth WHERE user=?`,[username],(err,rows)=>{
+            db.all(`SELECT * FROM auth WHERE id=?`,[id],(err,rows)=>{
                 if(err){
                     reject({code:500,message:err.message})
                 }else{
@@ -66,27 +66,28 @@ class Authentication{
         })
     }
     /**
-     * **Function that adds a user with the provided username and authorization level to database**
+     * **Function that adds a user with the provided id and authorization level to database**
      * 
      * example:
      * ```js
-     * await Authentication.addUser("AnotherUser",0,1)
+     * await Authentication.addUser("525791610794147842",0,1)
      * ```
-     * @param {String} username Username of the user you want to add
+     * @param {String} id id of the user you want to add
      * @param {Number} authlvl  The users authorization level
      * @param {number} lvl Your authorization level
+     * @returns {Promise.<{code:Number,message:User|Error}}
      */
-    static async addUser(username,authlvl=0,lvl=0){
+    static async addUser(id,authlvl=0,lvl=0){
         return new Promise(async(resolve,reject)=>{
             if(lvl<=0){
                 reject({code:401,message:"Unauthorized"})
             }
-            if(!await Authentication.getUser(username)){
-                db.run(`INSERT INTO auth (username,authlvl) values (?,?)`,[username,authlvl],async(err)=>{
+            if(!await Authentication.getUser(id)){
+                db.run(`INSERT INTO auth (id,authlvl) values (?,?)`,[id,authlvl],async(err)=>{
                     if(err){
                         reject({code:500,message:err.message})
                     }else{
-                        resolve({code:200,message:await Authentication.getUser(username)})
+                        resolve({code:200,message:await Authentication.getUser(id)})
                     }
                 })
             }else{
@@ -95,24 +96,25 @@ class Authentication{
         })
     }
     /**
-     * **Function that deletes a user with the provided username from database**
+     * **Function that deletes a user with the provided id from database**
      * 
      * example:
      * ```js
-     * await Authentication.deleteUser("User",3)
+     * await Authentication.deleteUser("525791610794147842",3)
      * ```
-     * @param {String} username Username of the user you want to delete from database
+     * @param {String} id id of the user you want to delete from database
      * @param {Number} authlvl Your authorization level
+     * @returns {Promise.<{code:Number,message:"Success"|Error}>}
      */
-    static async deleteUser(username,authlvl=0){
+    static async deleteUser(id,authlvl=0){
         return new Promise(async(resolve,reject)=>{
-            const user = await Authentication.getUser(username)
+            const user = await Authentication.getUser(id)
             if(!user){
                 reject({code:404,message:"User not found"})
             }else if(user.authlvl>=authlvl||authlvl<2){
                 reject({code:401,message:"Unauthorized"})
             }else{
-                db.run(`DELETE FROM auth WHERE username=?`,[username],(err)=>{
+                db.run(`DELETE FROM auth WHERE id=?`,[id],(err)=>{
                     if(err){
                         reject({code:500,message:err.message})
                     }else{
@@ -123,32 +125,32 @@ class Authentication{
         })
     }
     /**
-     * **Function that edits a user with the provided username**
+     * **Function that edits a user with the provided id**
      * 
      * example:
      * ```js
-     * await Authentication.editUser("Username",2,"authlvl=0")
+     * await Authentication.editUser("525791610794147842",2,"authlvl=0")
      * ```
-     * @param {String} username Username of the user you want to edit
+     * @param {String} id id of the user you want to edit
      * @param {Number} authlvl Your authorization level
      * @param {String} data The data you want to set
      * @returns {Promise.<{code:Number,message:User|Error}>}
      */
-    static async editUser(username,authlvl=0,data){ 
+    static async editUser(id,authlvl=0,data){ 
         return new Promise(async(resolve,reject)=>{
-            const user = await Authentication.getUser(username)
+            const user = await Authentication.getUser(id)
             if(!user){
                 reject({code:404,message:"User not found"})
             }else if(user.authlvl>=authlvl||authlvl<1){
                 reject({code:401,message:"Unauthorized"})
-            }else if(data.includes("username")){
+            }else if(data.includes("id")){
                 reject({code:403,message:"Forbidden"})
             }else{
-                db.run(`UPDATE auth SET ? WHERE username = ?`,[data,username],async(err)=>{
+                db.run(`UPDATE auth SET ? WHERE id = ?`,[data,id],async(err)=>{
                     if(err){
                         reject({code:500,message:err.message})
                     }else{
-                        resolve({code:200,message:await Authentication.getUser(username)})
+                        resolve({code:200,message:await Authentication.getUser(id)})
                     }
                 })
             }
