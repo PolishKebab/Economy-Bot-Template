@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, CommandInteraction, EmbedBuilder } = require("discord.js");
 const Client = require("..");
-const { Store } = require("../modules/store");
+const Store = require("../modules/store/store");
 
 module.exports={
     module:"store",

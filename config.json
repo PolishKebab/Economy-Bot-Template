@@ -1,5 +1,5 @@
 {
-    "token":"Bot token here",
+    "token":"Bot token",
     "modules":{
       "main":true,
       "messageEarn":false,

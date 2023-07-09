@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../leaderboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+</head>
+<body>
+    <table class="center">
+        <tr>
+            <th>Username</th>
+            <th>Credits</th>
+        </tr>
+    <% for(let user of leaderboard){ %>
+        <tr>
+            <td><%= user.username %></td>
+            <td><%= user.credits %></td>
+        </tr>
+    <% } %>
+    </table>
+</body>
+</html>

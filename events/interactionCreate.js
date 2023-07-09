@@ -1,5 +1,5 @@
 const {Interaction}=require('discord.js')
-const {Client} = require("../index")
+const Client = require("../index")
 /**
 * @param {Client} client
 * @param {Interaction} interaction

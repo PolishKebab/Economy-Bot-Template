@@ -1,0 +1,18 @@
+.center {
+    margin: auto;
+    width: 20%;
+    border: 15px solid rgb(41, 43, 41);
+    background-color: rgb(53, 55, 53);
+}
+td, th{
+    font-size: 25px;
+    color:rgb(189, 178, 178);
+    width: 50%;
+    text-align: center;
+}
+th{
+    color: rgb(153, 145, 145)
+}
+body{
+    background-color: rgb(48, 47, 47);
+}

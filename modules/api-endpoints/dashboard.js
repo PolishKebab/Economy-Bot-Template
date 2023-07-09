@@ -1,1 +1,0 @@
-// visual data , for ejs

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="../user.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+</head>
+<body>
+    <nav style="font-size: 25px;">
+        <% if(req.session.user.id=="true"){ %>
+            <a href="<%= link %>">
+                <button>Login</button>
+            </a>
+        <% } else { %>
+            <%=req.session.user.username %>
+            <a href="/logout">
+                <button>Logout</button>
+            </a>
+        <% } %>
+    </nav>
+    <div>
+        <% if(user){ %>
+        <table class="center">
+            <tr>
+                <td rowspan="2" style="width: 100px; height: 100px;"><img src="<%= user.displayAvatarURL() %>"></td><td style="text-align: center; font-size: 50px;"><b><%= user.username %></b></td>
+            </tr>
+            <tr>
+                <td style="text-align: center; font-size: 25px;">Credits: <%= user.credits %> <%= user.authlvl>0?"Auth: "+user.authlvl:"" %> </td>
+            </tr>
+        </table>
+        <% } else {%>
+            <div class="center" style="text-align: center; font-size: 50px;">
+                <b>User not found</b>
+            </div>
+            <% if(auth&&auth.authlvl>0){ %>
+                <button class="center">Add</button>
+            <% } %>
+        <% } %>
+        <% if(auth&&auth.authlvl>1){ %>
+        <table class="options">
+            <tr>
+                <td style="width: 50%; padding-left: 20%; margin: auto;"><button>Edit</button></td><td style="width: 50%; margin: auto;"><button>Delete</button></td>
+            </tr>
+        </table>
+        <% } %>
+    </div>
+</body>
+</html>

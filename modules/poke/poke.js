@@ -1,5 +1,5 @@
 const { Message, GuildMember } = require("discord.js");
-const { Bank,User } = require("../functions");
+const { Bank,User } = require("../../functions");
 /**
  * **Plugin made by:**
  * 
@@ -7,7 +7,7 @@ const { Bank,User } = require("../functions");
  */
 class Poke{
     constructor(){
-        if(!require("../config.json").modules.poke){
+        if(!require("../../config.json").modules.poke){
             throw new Error(`[Modules:Poke] Error: module is not enabled.`)
         }
     }
@@ -82,4 +82,4 @@ class Poke{
         return await Bank.addMoney(user,Poke.reward)
     }
 }
-module.exports={Poke}
+module.exports=Poke

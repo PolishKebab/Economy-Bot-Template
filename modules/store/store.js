@@ -1,4 +1,4 @@
-const {db} = require("../functions")
+const {db} = require("../../functions")
 /**
  * @typedef Item
  * @property {Number} id
@@ -14,8 +14,8 @@ const {db} = require("../functions")
  */
 class Store{
     constructor(){
-        if(require("../config.json").modules.store){
-            db.run(`CREATE TABLE IF NOT EXIST store (id int primary key autoincrement, name text, description text, image text, price int)`)
+        if(require("../../config.json").modules.store){
+            db.run(`CREATE TABLE IF NOT EXISTS store (id int primary key autoincrement, name text, description text, image text, price int)`)
         }else{
             throw new Error(`[Modules:Store] Error: module is not enabled.`)
         }
@@ -150,4 +150,4 @@ class Store{
         })
     }
 }
-module.exports={Store}
+module.exports=Store

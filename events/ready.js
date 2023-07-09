@@ -1,7 +1,7 @@
 const Client = require("../index");
 const { checkSlashCommandUpdates, CommandDatabase, decode } = require("../functions");
 const { REST, Routes } = require("discord.js");
-const { API } = require("../modules/API");
+const fs=require('fs').promises
 /**
  * @param {Client} client 
  */
@@ -24,7 +24,10 @@ module.exports=async(client)=>{
         Routes.applicationCommands(client.user.id),
         {body: updates.map(r=>JSON.parse(decode(r.data)))}
     )
-    new API(client)
+    for(let module of await fs.readdir('./modules')){
+        const file=require(`../modules/${module}/${module}.js`)
+        if(client.config.modules[module])new file(client)
+    }
     console.log("Checking module status...")
     for(let module in client.config.modules){
         console.log(`[Modules:${module}] ${client.config.modules[module]?"on":"off"}.`)

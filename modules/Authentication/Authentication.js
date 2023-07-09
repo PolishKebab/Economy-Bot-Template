@@ -1,4 +1,4 @@
-const {db} = require("../functions")
+const {db} = require("../../functions")
 /**
  * @typedef User
  * @property {String} id
@@ -16,11 +16,16 @@ const {db} = require("../functions")
  * * 3 - add/edit/delete user
  */
 class Authentication{
+    /**
+     * **Discord authentication link**
+     * @type {String}
+     */
+    static authLink = "https://discord.com/api/oauth2/authorize?client_id=935170846677422080&redirect_uri=http%3A%2F%2Flocalhost%3A100%2Fauth&response_type=token&scope=identify";
     constructor(){
-        if(!require("../config.json").modules.Authentication){
+        if(!require("../../config.json").modules.Authentication){
             throw new Error(`[Modules:Authentication]: module is not enabled.`)
         }else{
-            db.run(`CREATE TABLE IF NOT EXIST auth (id text, authlvl int)`)
+            db.run(`CREATE TABLE IF NOT EXISTS auth (id text, authlvl int)`)
         }
     }
     /**
@@ -60,6 +65,9 @@ class Authentication{
                 if(err){
                     reject({code:500,message:err.message})
                 }else{
+                    if(!rows[0]){
+                        resolve({code:404,message:rows[0]})
+                    }
                     resolve({code:200,message:rows[0]})
                 }
             })
@@ -82,7 +90,7 @@ class Authentication{
             if(lvl<=0){
                 reject({code:401,message:"Unauthorized"})
             }
-            if(!await Authentication.getUser(id)){
+            if((await Authentication.getUser(id)).code==404){
                 db.run(`INSERT INTO auth (id,authlvl) values (?,?)`,[id,authlvl],async(err)=>{
                     if(err){
                         reject({code:500,message:err.message})
@@ -157,4 +165,4 @@ class Authentication{
         })
     }
 }
-module.exports={Authentication}
+module.exports=Authentication

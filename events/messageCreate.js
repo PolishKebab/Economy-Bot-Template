@@ -1,7 +1,7 @@
 const { Message } = require("discord.js");
 const Client = require("../index");
-const { messageEarn } = require("../modules/messageEarn");
-const {Poke} = require("../modules/poke")
+const messageEarn = require("../modules/messageEarn/messageEarn");
+const Poke = require("../modules/poke/poke")
 const { Bank } = require("../functions");
 /**
  * @param {Client} client 

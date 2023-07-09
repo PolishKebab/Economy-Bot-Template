@@ -1,0 +1,17 @@
+.center {
+    margin: auto;
+    width: 20%;
+    margin-top: 20%;
+    border: 15px solid rgb(41, 43, 41);
+    background-color: rgb(53, 55, 53);
+}
+body{
+    background-color: rgb(48, 47, 47);
+}
+.options{
+    margin: auto;
+    width: 20%;
+    margin-top: 10px;
+    border: 15px solid rgb(41, 43, 41);
+    background-color: rgb(53, 55, 53);
+}

@@ -1,4 +1,4 @@
-const {db} = require("../functions")
+const {db} = require("../../functions")
 /**
  * @typedef Cooldown
  * @property {String} id
@@ -21,8 +21,8 @@ class messageEarn{
      */
     static reward = 1;
     constructor(){
-        if(require("../config.json").modules.messageEarn){
-            db.run(`CREATE TABLE IF NOT EXIST msgEarnCooldown (id varchar(20),timestamp varchar(20))`)
+        if(require("../../config.json").modules.messageEarn){
+            db.run(`CREATE TABLE IF NOT EXISTS msgEarnCooldown (id varchar(20),timestamp varchar(20))`)
         }else{
             throw new Error(`[Modules:messageEarn] Error: module is not enabled.`)
         }
@@ -137,4 +137,4 @@ class messageEarn{
         return (Date.now()-((await messageEarn.getCooldown(user))?.timestamp|0)>messageEarn.cooldown*60000)
     }
 }
-module.exports={messageEarn}
+module.exports=messageEarn
