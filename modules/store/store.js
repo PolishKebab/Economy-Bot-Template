@@ -149,5 +149,8 @@ class Store{
             })
         })
     }
+    static async giveItem(name,id){
+
+    }
 }
 module.exports=Store

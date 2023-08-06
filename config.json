@@ -6,6 +6,7 @@
       "poke":false,
       "store":false,
       "API":false,
-      "Authentication":false
+      "Authentication":false,
+      "inventory":false
       }
 }
