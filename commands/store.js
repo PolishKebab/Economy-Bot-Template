@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, PermissionsBitField } = require("discord.js");
 const Client = require("..");
 const Store = require("../modules/store/store");
 const Inventory = require("../modules/Inventory/inventory");
@@ -11,6 +11,20 @@ module.exports={
         )
     ).addSubcommand(subcommand=>
         subcommand.setName("items").setDescription("List of items avalible in store")
+    ).addSubcommand(subcommand=>
+        subcommand.setName("additem").setDescription("Add an item to the store").addStringOption(option=>
+            option.setName("name").setDescription("Item name").setRequired(true)
+        ).addStringOption(option=>
+            option.setName("description").setDescription("Item description").setRequired(true)    
+        ).addStringOption(option=>
+            option.setName("image").setDescription("Item image link")    
+        ).addNumberOption(option=>
+            option.setName("price").setDescription("Item price")  
+        )
+    ).addSubcommand(subcommand=>
+        subcommand.setName("removeitem").setDescription("Remove an item from the store").addStringOption(option=>
+            option.setName("name").setDescription("Item name").setRequired(true)    
+        )
     ).setDMPermission(false),
     /**
      * @param {Client} client 
@@ -41,6 +55,31 @@ module.exports={
                 return await interaction.editReply({embeds:[embed]})
             }
             embed.setDescription(`${items.map(r=>`${r.name} \`${r.description}\` $${r.price}`).join("\n")}`)
+            return await interaction.editReply({embeds:[embed]})
+        }
+        if(interaction.options.getSubcommand()=="additem"){
+            if(!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)){
+                embed.setDescription("Unauthorized")
+                return await interaction.editReply({embeds:[embed]})
+            }
+            const item = await Store.addItem(interaction.options.getString("name"),interaction.options.getString("description"),interaction.options.getString("image"),interaction.options.getNumber("price"))
+            embed.setTitle(item.name+" $"+item.price)
+            embed.setDescription(item.description)
+            interaction.options.getString("image")?embed.setThumbnail(item.image):"";
+            return await interaction.editReply({embeds:[embed]})
+        }
+        if(interaction.options.getSubcommand()=="removeitem"){
+            if(!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)){
+                embed.setDescription("Unauthorized")
+                return await interaction.editReply({embeds:[embed]})
+            }
+            const item = await Store.getItem(interaction.options.getString("name"))
+            if(!item){
+                embed.setDescription("Can't remove a non-existing item")
+                return await interaction.editReply({embeds:[embed]})
+            }
+            await Store.removeItem(item.name)
+            embed.setDescription(`Removed ${item.name} from the store`)
             return await interaction.editReply({embeds:[embed]})
         }
     }
