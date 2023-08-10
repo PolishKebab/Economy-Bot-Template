@@ -254,6 +254,24 @@ class Bank{
         })
     }
     /**
+     * **Function that transfers credits from one user to another
+     * @param {Snowflake} from 
+     * @param {Snowflake} to 
+     * @param {Number} amount 
+     * @returns {Promise.<[User,User]>}
+     */
+    static async transfer(from,to,amount){
+        return new Promise(async(resolve,reject)=>{
+            if(amount<0){
+                reject(new Error("Transfer amount cannot be lower than 0"))
+            }
+            if((await Bank.getUser(from)).credits<amount){
+                reject(new Error("Insufficient funds"))
+            }
+            resolve([await Bank.removeMoney(from,amount),await Bank.addMoney(to,amount)])
+        })
+    }
+    /**
      * **Function that resets the balance of all acounts to 0**
      * 
      * example:

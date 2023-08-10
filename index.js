@@ -39,9 +39,14 @@ for(let event of fs.readdirSync("./events")){
     }
 }
 readline.on("line",async(line)=>{
-  var dat=eval(line)
-  if(dat instanceof Promise)dat=await dat
-  console.log(dat)
+  try{
+    var dat=eval(line)
+    if(dat instanceof Promise)dat=await dat
+    console.log(dat)
+  }catch(e){
+    console.log(e)
+  }
+
 })
 client.login(client.config.token);
 module.exports=Client

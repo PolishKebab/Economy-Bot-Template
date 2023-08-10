@@ -1,5 +1,5 @@
 const Client = require("../index.js");
-const {ChatInputCommandInteraction,SlashCommandBuilder, EmbedBuilder} = require("discord.js")
+const {ChatInputCommandInteraction,SlashCommandBuilder, EmbedBuilder, PermissionsBitField} = require("discord.js")
 const {Bank} = require("../functions")
 module.exports={
     module: "main",
@@ -23,7 +23,7 @@ module.exports={
         )    
     ).addSubcommand(subcommand=>
         subcommand.setName("resetmoney").setDescription("Resets money of all users to 0")
-    ).setDMPermission(false),
+    ).setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator).setDMPermission(false),
     /**
     * @param {Client} client 
     * @param {ChatInputCommandInteraction} interaction 
